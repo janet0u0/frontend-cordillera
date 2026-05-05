@@ -1,7 +1,6 @@
 /* 
- * App.css - Estilos globales
+ * App.css - Estilos Globales
  * Plataforma de Monitoreo Inteligente - Grupo Cordillera
- * Los estilos del Dashboard están en el componente mismo
  */
 
 * {
@@ -16,11 +15,19 @@ body {
   color: #2c3e50;
 }
 
-button:hover {
-  opacity: 0.9;
+button {
   cursor: pointer;
 }
 
-select:focus {
+button:hover {
+  opacity: 0.9;
+}
+
+input:focus {
   outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }

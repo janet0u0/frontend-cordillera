@@ -1,0 +1,120 @@
+/* 
+ * Login.css - Estilos de la página de Login
+ * Plataforma de Monitoreo Inteligente - Grupo Cordillera
+ */
+
+.login-pagina {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.login-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.login-titulo {
+  margin: 0 0 8px;
+  color: #2c3e50;
+  font-size: 28px;
+}
+
+.login-subtitulo {
+  color: #636e72;
+  margin: 0 0 32px;
+  font-size: 14px;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.login-form-titulo {
+  text-align: center;
+  color: #2c3e50;
+  margin: 0 0 24px;
+}
+
+.login-campo {
+  margin-bottom: 16px;
+}
+
+.login-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #dfe6e9;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.login-error {
+  background-color: #ffeaa7;
+  border: 1px solid #fdcb6e;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  color: #2d3436;
+  font-size: 14px;
+}
+
+.login-boton {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.login-boton:hover {
+  opacity: 0.9;
+}
+
+.login-usuarios {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #636e72;
+  text-align: left;
+}
+
+.login-usuarios-titulo {
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0 0 8px;
+}
+
+.login-password {
+  margin-top: 8px;
+  font-weight: bold;
+  color: #00b894;
+}
