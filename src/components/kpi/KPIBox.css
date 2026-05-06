@@ -1,0 +1,32 @@
+/*
+ * KPIBox.css - Estilos del componente KPI reutilizable
+ * Plataforma de Monitoreo Inteligente - Grupo Cordillera
+ */
+
+.kpi-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.kpi-box:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-box-titulo {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-box-valor {
+  margin: 0;
+  color: #0056b3;
+  font-size: 24px;
+  font-weight: bold;
+}

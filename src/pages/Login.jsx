@@ -1,42 +1,43 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { login } from '../services/api';
+import { login, registrar } from '../services/api';
 import './Login.css';
 
-/**
- * Página de Login - Grupo Cordillera
- * Autentica al usuario contra MS-Usuarios
- */
 function Login() {
+  // Estados para controlar el formulario
+  const [esRegistro, setEsRegistro] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [rol, setRol] = useState('EJECUTIVO');
+  
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
   const { iniciarSesion } = useAuth();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      setError('Por favor ingresa email y contraseña');
+  const handleAccion = async () => {
+    if (!email || !password || (esRegistro && !nombre)) {
+      setError('Por favor completa todos los campos');
       return;
     }
     setCargando(true);
     setError(null);
     try {
-      const data = await login(email, password);
-      if (data.error) {
-        setError(data.error);
-        return;
+      if (esRegistro) {
+        const data = await registrar({ nombre, email, password, rol });
+        if (data.error) throw new Error(data.error);
+        alert('✅ Registro exitoso. Ahora puedes iniciar sesión.');
+        setEsRegistro(false);
+      } else {
+        const data = await login(email, password);
+        if (data.error) throw new Error(data.error);
+        iniciarSesion(data);
       }
-      iniciarSesion(data);
     } catch (err) {
-      setError('No se pudo conectar con el servidor');
+      setError(err.message || 'Error de conexión');
     } finally {
       setCargando(false);
     }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') handleLogin();
   };
 
   return (
@@ -46,52 +47,57 @@ function Login() {
         <p className="login-subtitulo">Plataforma de Monitoreo Inteligente</p>
 
         <div className="login-form">
-          <h2 className="login-form-titulo">🔐 Iniciar Sesión</h2>
+          <h2 className="login-form-titulo">
+            {esRegistro ? '📝 Crear Cuenta' : '🔐 Iniciar Sesión'}
+          </h2>
+
+          {esRegistro && (
+            <div className="login-campo">
+              <label className="login-label">Nombre Completo</label>
+              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Tu nombre" className="login-input" />
+            </div>
+          )}
 
           <div className="login-campo">
             <label className="login-label">Correo electrónico</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="usuario@cordillera.cl"
-              className="login-input"
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="usuario@cordillera.cl" className="login-input" />
           </div>
 
           <div className="login-campo">
             <label className="login-label">Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="••••••"
-              className="login-input"
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••" className="login-input" />
           </div>
 
-          {error && (
-            <div className="login-error">⚠️ {error}</div>
+          {esRegistro && (
+            <div className="login-campo">
+              <label className="login-label">Rol solicitado</label>
+              <select className="login-input" value={rol} onChange={(e) => setRol(e.target.value)}>
+                <option value="EJECUTIVO">👔 Ejecutivo</option>
+                <option value="ANALISTA">📊 Analista</option>
+                <option value="SUPERVISOR">🔍 Supervisor</option>
+                <option value="ADMIN_SISTEMA">🛠️ Administrador</option>
+              </select>
+            </div>
           )}
 
-          <button
-            onClick={handleLogin}
-            disabled={cargando}
-            className="login-boton"
-          >
-            {cargando ? '⏳ Verificando...' : '🚀 Ingresar'}
+          {error && <div className="login-error">⚠️ {error}</div>}
+
+          <button onClick={handleAccion} disabled={cargando} className="login-boton">
+            {cargando ? '⏳ Procesando...' : (esRegistro ? 'Registrar Usuario' : '🚀 Ingresar')}
           </button>
+
+          <p className="login-toggle" onClick={() => { setEsRegistro(!esRegistro); setError(null); }}>
+            {esRegistro ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate aquí'}
+          </p>
         </div>
 
-        <div className="login-usuarios">
-          <p className="login-usuarios-titulo">Usuarios de prueba:</p>
-          <p>👔 ejecutivo@cordillera.cl</p>
-          <p>📊 analista@cordillera.cl</p>
-          <p>🔍 supervisor@cordillera.cl</p>
-          <p className="login-password">Contraseña: 123456</p>
-        </div>
+        {!esRegistro && (
+          <div className="login-usuarios">
+            <p className="login-usuarios-titulo">Usuarios de prueba:</p>
+            <p>👔 ejecutivo@cordillera.cl | 📊 analista@cordillera.cl</p>
+            <p className="login-password">Contraseña: 123456</p>
+          </div>
+        )}
       </div>
     </div>
   );

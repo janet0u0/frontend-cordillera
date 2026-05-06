@@ -1,56 +1,37 @@
+import './VentasChart.css';
+
 /**
  * @component VentasChart
  * @description Componente de visualización de proyección de ventas.
- * Actualmente muestra un placeholder para el gráfico dinámico.
- * En una versión futura se integrará con Chart.js o Recharts
- * para mostrar datos reales del MS-KPI.
+ *
+ * Evolución planificada:
+ *  - v1.0: Placeholder visual (actual)
+ *  - v2.0: Integración con Chart.js consumiendo MS-KPI
+ *  - v3.0: Gráfico interactivo con filtros por sucursal
  *
  * @example
  * <VentasChart />
  */
 const VentasChart = () => {
-
-  /**
-   * Estilos del componente
-   */
-  const estilos = {
-    contenedor: {
-      padding: '20px',
-      backgroundColor: '#fff',
-      borderRadius: '8px',
-      border: '1px solid #ddd',
-      marginTop: '20px',
-      textAlign: 'center'
-    },
-    titulo: {
-      color: '#555',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      marginBottom: '8px'
-    },
-    placeholder: {
-      padding: '40px 0',
-      color: '#999',
-      fontSize: '14px',
-      fontStyle: 'italic'
-    },
-    icono: {
-      fontSize: '48px',
-      marginBottom: '12px'
-    }
-  };
-
   return (
-    <div style={estilos.contenedor}>
-      {/* Título del gráfico */}
-      <h4 style={estilos.titulo}>📈 Proyección de Ventas</h4>
+    <div className="chart-contenedor">
 
-      {/* Placeholder del gráfico */}
-      <div style={estilos.placeholder}>
-        <div style={estilos.icono}>📊</div>
-        <p>Gráfico dinámico de ventas</p>
-        <p>Datos provenientes del MS-KPI en tiempo real</p>
+      {/* Título descriptivo del gráfico */}
+      <h4 className="chart-titulo">📈 Proyección de Ventas</h4>
+
+      {/*
+        Placeholder del gráfico dinámico.
+        En producción se reemplazará por Chart.js
+        conectado al MS-KPI en tiempo real.
+      */}
+      <div className="chart-placeholder">
+        <div className="chart-icono">📊</div>
+        <p className="chart-descripcion">Gráfico dinámico de ventas</p>
+        <p className="chart-descripcion">
+          Datos provenientes del MS-KPI en tiempo real
+        </p>
       </div>
+
     </div>
   );
 };
