@@ -24,6 +24,7 @@ function Dashboard() {
     if (r === 'ADMIN' || r === 'EJECUTIVO') return 'EJECUTIVO';
     if (r === 'ANALISTA') return 'ANALISTA';
     if (r === 'SUPERVISOR') return 'SUPERVISOR';
+    if (r === 'ADMIN_SISTEMA') return 'ADMIN_SISTEMA'; // ✅ agregado
     return 'EJECUTIVO'; 
   };
 
@@ -34,6 +35,7 @@ function Dashboard() {
       case 'EJECUTIVO': return '👔';
       case 'ANALISTA': return '📊';
       case 'SUPERVISOR': return '🔍';
+      case 'ADMIN_SISTEMA': return '🛠️'; // ✅ agregado
       default: return '👤';
     }
   };
@@ -66,7 +68,6 @@ function Dashboard() {
 
   return (
     <div className="pagina">
-      {/* Header del Sistema */}
       <div className="header">
         <div className="header-contenido">
           <div>
@@ -97,7 +98,6 @@ function Dashboard() {
 
         {datos && (
           <>
-            {/* Encabezado dinámico del Reporte fabricado por el BFF */}
             <div className="reporte-header">
               <div>
                 <h2 className="reporte-titulo">
@@ -111,7 +111,6 @@ function Dashboard() {
             </div>
 
             <div className="kpis-grid">
-              {/* Tarjetas Base (Comunes) */}
               <div className="kpi-card" style={{ borderTop: '4px solid #0984e3' }}>
                 <p className="kpi-label">💰 Ventas Totales</p>
                 <p className="kpi-valor">${datos.ventasTotales?.toLocaleString()}</p>
@@ -132,8 +131,6 @@ function Dashboard() {
                 </div>
               </div>
 
-              {/* RENDERIZADO CONDICIONAL SEGÚN ROL (FACTORY METHOD RESULT) */}
-              
               {datos.rentabilidadNeta !== null && (
                 <div className="kpi-card" style={{ borderTop: '4px solid #fdcb6e' }}>
                   <p className="kpi-label">💹 Rentabilidad Neta</p>
@@ -161,7 +158,6 @@ function Dashboard() {
               )}
             </div>
 
-            {/* Footer de Estado de Servicios (Circuit Breaker status) */}
             <div className="footer">
               <p>⏱ Generado: {new Date(datos.generadoEn).toLocaleString()}</p>
               <p>

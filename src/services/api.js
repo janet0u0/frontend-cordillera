@@ -54,13 +54,13 @@ export const login = (email, password) =>
 
 /**
  * Registra un nuevo usuario en el sistema.
- * Llama al endpoint POST /api/usuarios de MS-Usuarios.
+ * Llama al endpoint POST /api/usuarios/registrar de MS-Usuarios.
  *
  * @param {Object} datosUsuario - { nombre, email, password, rol }
  * @returns {Promise<Object>} Usuario creado
  */
 export const registrar = (datosUsuario) =>
-  request(API_USUARIOS, 'POST', datosUsuario);
+  request(`${API_USUARIOS}/registrar`, 'POST', datosUsuario); // ✅ corregido
 
 /**
  * Obtiene el dashboard adaptado al rol del usuario.
