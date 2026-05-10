@@ -1,4 +1,4 @@
-markdown# Frontend Cordillera - Grupo Cordillera
+Frontend Cordillera - Grupo Cordillera
 
 Plataforma de Monitoreo Inteligente del Grupo Cordillera. Aplicación React que consume el BFF para mostrar dashboards personalizados según el rol del usuario.
 
