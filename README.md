@@ -40,6 +40,8 @@ npm start
 La aplicación quedará disponible en `http://localhost:3000`
 
 ## Estructura del proyecto
+
+```text
 frontend-cordillera/
 ├── src/
 │   ├── context/
@@ -60,8 +62,11 @@ frontend-cordillera/
 │   ├── App.css
 │   └── index.js
 ├── public/
+├── Dockerfile
+├── nginx.conf
 ├── package.json
 └── README.md
+```
 
 ## Usuarios de prueba
 
