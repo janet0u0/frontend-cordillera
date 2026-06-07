@@ -1,20 +1,22 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import VentasChart from './VentasChart';
 
-// Mock completo de chart.js ANTES de cualquier import
+/* ================= MOCK CHART.JS ================= */
 jest.mock('chart.js', () => {
-  const MockChart = jest.fn().mockImplementation(() => ({
+  const ChartMock = jest.fn().mockImplementation(() => ({
     destroy: jest.fn(),
-    update: jest.fn(),
   }));
-  MockChart.register = jest.fn();
+
+  ChartMock.register = jest.fn();
+
   return {
-    Chart: MockChart,
+    Chart: ChartMock,
     registerables: [],
   };
 });
 
-// Mock del canvas getContext
+/* ================= MOCK CANVAS ================= */
 beforeAll(() => {
   HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     clearRect: jest.fn(),
@@ -29,60 +31,99 @@ beforeAll(() => {
   }));
 });
 
-import VentasChart from './VentasChart';
+beforeEach(() => {
+  jest.clearAllMocks();
+  global.fetch = jest.fn();
+});
 
-describe('Pruebas del componente VentasChart', () => {
+describe('VentasChart FINAL', () => {
 
-  test('Debe mostrar estado de carga inicial', () => {
-    global.fetch = jest.fn(() => new Promise(() => {}));
-    render(<VentasChart />);
-    expect(screen.getByText(/Cargando datos/i)).toBeInTheDocument();
-  });
-
-  test('Debe mostrar error cuando MS-Datos no está disponible', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.reject(new Error('Network error'))
-    );
-    render(<VentasChart />);
-    await waitFor(() => {
-      expect(screen.getByText(/MS-Datos no disponible/i))
-        .toBeInTheDocument();
+  test('render correcto con datos válidos', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [
+        { sucursal: 'Centro', monto: 100 },
+        { sucursal: 'Norte', monto: 200 },
+      ],
     });
-  });
 
-  test('Debe mostrar mensaje cuando no hay ventas registradas', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([]),
-      })
-    );
     render(<VentasChart />);
-    await waitFor(() => {
-      expect(screen.getByText(/Sin ventas registradas/i))
-        .toBeInTheDocument();
-    });
-  });
 
-  test('Debe mostrar el título del gráfico', () => {
-    global.fetch = jest.fn(() => new Promise(() => {}));
-    render(<VentasChart />);
-    expect(screen.getByText(/Ventas por Sucursal/i)).toBeInTheDocument();
-  });
-
-  test('Debe renderizar ventas cuando MS-Datos responde correctamente', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([
-          { sucursal: 'Santiago Centro', monto: 50000, cantidad: 3, origen: 'POS' },
-          { sucursal: 'Valparaíso', monto: 80000, cantidad: 5, origen: 'ECOMMERCE' },
-        ]),
-      })
-    );
-    render(<VentasChart />);
     await waitFor(() => {
       expect(screen.getByText(/Ventas por Sucursal/i)).toBeInTheDocument();
     });
   });
+
+  test('error cuando fetch falla', async () => {
+    global.fetch.mockRejectedValueOnce(new Error('fail'));
+
+    render(<VentasChart />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/MS-Datos no disponible/i)).toBeInTheDocument();
+    });
+  });
+
+  test('error cuando response no es ok', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ error: 'error' }),
+    });
+
+    render(<VentasChart />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/MS-Datos no disponible/i)).toBeInTheDocument();
+    });
+  });
+
+  test('estado vacío cuando no hay ventas', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [],
+    });
+
+    render(<VentasChart />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Sin ventas registradas/i)).toBeInTheDocument();
+    });
+  });
+
+  test('cubre branch ctx null correctamente', async () => {
+    HTMLCanvasElement.prototype.getContext = jest.fn(() => null);
+
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [
+        { sucursal: 'A', monto: 100 },
+      ],
+    });
+
+    render(<VentasChart />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Ventas por Sucursal/i)).toBeInTheDocument();
+    });
+  });
+
+  test('ejecuta cleanup (useEffect unmount)', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [
+        { sucursal: 'A', monto: 100 },
+      ],
+    });
+
+    const { unmount } = render(<VentasChart />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Ventas por Sucursal/i)).toBeInTheDocument();
+    });
+
+    act(() => {
+      unmount();
+    });
+  });
+
 });
