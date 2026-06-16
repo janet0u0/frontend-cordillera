@@ -43,28 +43,46 @@ La aplicación quedará disponible en `http://localhost:3000`
 
 ```text
 frontend-cordillera/
+├── public/                            
 ├── src/
-│   ├── context/
-│   │   └── AuthContext.jsx
-│   ├── pages/
-│   │   ├── Dashboard.jsx
-│   │   ├── Dashboard.css
-│   │   ├── Login.jsx
-│   │   └── Login.css
-│   ├── components/
-│   │   ├── KPIBox.jsx
+│   ├── components/                     
+│   │   ├── __tests__/                 
+│   │   │   ├── KPIBox.test.jsx       
+│   │   │   └── VentasChart.test.jsx    
 │   │   ├── KPIBox.css
-│   │   ├── VentasChart.jsx
-│   │   └── VentasChart.css
-│   ├── services/
+│   │   ├── KPIBox.jsx
+│   │   ├── VentasChart.css
+│   │   └── VentasChart.jsx
+│   │
+│   ├── context/                        
+│   │   ├── __tests__/                  
+│   │   │   └── AuthContext.test.jsx    
+│   │   └── AuthContext.jsx
+│   │
+│   ├── pages/                          
+│   │   ├── __tests__/                  
+│   │   │   ├── Dashboard.test.jsx      
+│   │   │   └── Login.test.jsx          
+│   │   ├── Dashboard.css
+│   │   ├── Dashboard.jsx
+│   │   ├── Login.css
+│   │   └── Login.jsx
+│   │
+│   ├── services/                      
+│   │   ├── __tests__/                  
+│   │   │   └── api.test.js            
 │   │   └── api.js
-│   ├── App.jsx
+│   │
+│   ├── __tests__/                   
+│   │   └── App.test.jsx                
 │   ├── App.css
-│   └── index.js
-├── public/
+│   ├── App.jsx
+│   ├── index.js
+│   └── setupTests.js                   
+│
 ├── Dockerfile
 ├── nginx.conf
-├── package.json
+├── package.json                        
 └── README.md
 ```
 
